@@ -100,23 +100,23 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 Zoroastrian religion was born in the Avestan-speaking regions of the Iranian plateau, the Avestans being one of the many Iranian ethnicities. Basic prayer:
 
 
--"Righteousness is best (of all that is) good.
+- "Righteousness is best (of all that is) good.
 As desired, what is being desired
 is truth for him who (represents) best truth."
 
--“Asha is virtuously maginificent,
+- “Asha is virtuously maginificent,
 And joy upon joy is what Asha provides
 For thus is Asha Vahishta."
 
--"Truth is best (of all that is) good.
+- "Truth is best (of all that is) good.
 As desired, as desired, truth
 is for him who (represents) best truth."
 
--"Holiness (Asha) is the best of all good:
+- "Holiness (Asha) is the best of all good:
 it is also happiness.
 Happy the man who is holy with perfect holiness!"
 
--"Righteousness is the best good and it is happiness.
+- "Righteousness is the best good and it is happiness.
 Happiness is to her/him who is righteous
 for the sake of the best righteousness."
 
