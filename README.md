@@ -96,11 +96,9 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 
 - **Opposite Movement**: The checkers move in opposite direction from each other, since the white ones represent Ahura Mazda, the good god, who is opposed by Ahriman, the evil god, in all of his doings, represented by the black checkers.
 
-<br><br>
+<br>
 
 Zoroastrian religion was born in the Avestan-speaking regions of the Iranian plateau, the Avestans being one of the many Iranian ethnicities. Basic prayer:
-
-<br>
 
 - "Righteousness is best (of all that is) good.
 As desired, what is being desired
