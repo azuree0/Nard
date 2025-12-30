@@ -123,10 +123,6 @@ function createPoint(pointIndex, boardArray) {
     point.dataset.pointIndex = pointIndex;
     
     const pointValue = boardArray[pointIndex];
-    const pointNumber = document.createElement('div');
-    pointNumber.className = 'point-number';
-    pointNumber.textContent = pointIndex + 1;
-    point.appendChild(pointNumber);
     
     const checkersContainer = document.createElement('div');
     checkersContainer.className = 'checkers-container';
