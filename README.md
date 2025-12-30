@@ -82,7 +82,7 @@ http://localhost:8000
 - **"Tables" Games**: Became popular as "tables" or "tabula" in medieval Europe. Gradually evolved into modern backgammon with rule modifications.
 
 ### Modern Era
-- **Persian Tradition**: Nard remains popular in Iran, Afghanistan, and Central Asia. Maintains traditional rules distinct from Western backgammon.
+- **Continuity**: Nard remains popular in Iran, Afghanistan, and Central Asia. Maintains game rules distinct from Western backgammon.
 
 ### Symbol
 
