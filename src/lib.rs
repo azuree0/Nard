@@ -243,7 +243,7 @@ impl GameState {
             if self.has_checker_at(point_idx) {
                 let available_dice = self.get_available_dice();
                 for &die in &available_dice {
-                    if let Some(target) = self.get_target_point(point_idx, die) {
+                    if let Some(target) = self.get_target_point_internal(point_idx, die) {
                         if self.is_valid_move_to(target) {
                             return true;
                         }
@@ -346,7 +346,15 @@ impl GameState {
         dice
     }
     
-    fn get_target_point(&self, from: usize, die: u8) -> Option<usize> {
+    #[wasm_bindgen]
+    pub fn get_target_point(&self, from: usize, die: u8) -> JsValue {
+        match self.get_target_point_internal(from, die) {
+            Some(point) => serde_wasm_bindgen::to_value(&point).unwrap(),
+            None => JsValue::NULL,
+        }
+    }
+    
+    fn get_target_point_internal(&self, from: usize, die: u8) -> Option<usize> {
         match self.current_player {
             Player::White => {
                 // White path: 15-24 (increasing), then 12-1 (decreasing)
@@ -408,7 +416,8 @@ impl GameState {
         }
     }
     
-    fn is_valid_move_to(&self, point: usize) -> bool {
+    #[wasm_bindgen]
+    pub fn is_valid_move_to(&self, point: usize) -> bool {
         if point >= 24 {
             return false;
         }
@@ -442,7 +451,8 @@ impl GameState {
         }
     }
     
-    fn is_valid_entry_point(&self, point: usize) -> bool {
+    #[wasm_bindgen]
+    pub fn is_valid_entry_point(&self, point: usize) -> bool {
         // Valid entry point for re-entering from bar:
         if point >= 24 {
             return false;
@@ -572,7 +582,7 @@ impl GameState {
             if self.has_checker_at(point_idx) {
                 let available_dice = self.get_available_dice();
                 for &die in &available_dice {
-                    if let Some(target) = self.get_target_point(point_idx, die) {
+                    if let Some(target) = self.get_target_point_internal(point_idx, die) {
                         if self.is_valid_move_to(target) {
                             moves.push(target as u8);
                         }
@@ -820,60 +830,12 @@ impl GameState {
             return false;
         }
         
-        // Verify move distance matches die
-        let distance = match self.current_player {
-            Player::White => {
-                // White path: 15-24 (increasing), then 12-1 (decreasing)
-                if from_point >= 14 && from_point <= 23 {
-                    // First half: increasing
-                    if to_point < from_point {
-                        // Wrapped to second half
-                        let first_half_distance = 24 - from_point;
-                        let second_half_distance = 11 - to_point;
-                        first_half_distance + second_half_distance
-                    } else {
-                        to_point - from_point
-                    }
-                } else if from_point <= 11 {
-                    // Second half: decreasing
-                    if from_point < to_point {
-                        return false; // Can't move backward in second half
-                    }
-                    from_point - to_point
-                } else {
-                    return false;
-                }
+        // Verify move distance matches die by checking if to_point matches get_target_point
+        if let Some(expected_target) = self.get_target_point_internal(from_point, self.dice[die_idx]) {
+            if expected_target != to_point {
+                return false;
             }
-            Player::Black => {
-                // Black path: 1-12 (increasing), then 24-13 (decreasing)
-                if from_point <= 11 {
-                    // First half: increasing
-                    if to_point > 11 {
-                        // Wrapped to second half
-                        // Distance from from_point to point 12 (index 12), then to to_point
-                        // But when wrapping, to_point is in second half (23-12), so:
-                        // We go from from_point to 12 (distance = 12 - from_point)
-                        // Then from 24 (index 23) down to to_point (distance = 23 - to_point)
-                        // Total = (12 - from_point) + (23 - to_point)
-                        let first_half_distance = 12 - from_point;
-                        let second_half_distance = 23 - to_point;
-                        first_half_distance + second_half_distance
-                    } else {
-                        to_point - from_point
-                    }
-                } else if from_point >= 12 && from_point <= 23 {
-                    // Second half: decreasing
-                    if to_point > from_point {
-                        return false; // Can't move backward in second half
-                    }
-                    from_point - to_point
-                } else {
-                    return false;
-                }
-            }
-        };
-        
-        if distance != self.dice[die_idx] as usize {
+        } else {
             return false;
         }
         
@@ -1005,6 +967,85 @@ impl GameState {
     
     pub fn reset(&mut self) {
         *self = GameState::new();
+    }
+    
+    /// Find the best move for a clicked point. Returns [die, target_point] or null if no move available.
+    /// This method handles both regular moves and re-entering from bar.
+    #[wasm_bindgen]
+    pub fn find_move_for_point(&self, point_index: usize) -> JsValue {
+        if self.game_over {
+            return JsValue::NULL;
+        }
+        
+        // Check if player has checkers on bar
+        let on_bar = match self.current_player {
+            Player::White => self.white_bar > 0,
+            Player::Black => self.black_bar > 0,
+        };
+        
+        if on_bar {
+            // Re-entering from bar - check if this is a valid entry point
+            let dice = self.dice;
+            let dice_used = self.dice_used;
+            
+            // Try first die
+            if !dice_used[0] && dice[0] > 0 {
+                let expected_entry = match self.current_player {
+                    Player::White => (24 - dice[0]) as usize,
+                    Player::Black => (dice[0] - 1) as usize,
+                };
+                if expected_entry == point_index && self.is_valid_entry_point(point_index) {
+                    return serde_wasm_bindgen::to_value(&[dice[0] as u32, point_index as u32]).unwrap();
+                }
+            }
+            
+            // Try second die
+            if !dice_used[1] && dice[1] > 0 {
+                let expected_entry = match self.current_player {
+                    Player::White => (24 - dice[1]) as usize,
+                    Player::Black => (dice[1] - 1) as usize,
+                };
+                if expected_entry == point_index && self.is_valid_entry_point(point_index) {
+                    return serde_wasm_bindgen::to_value(&[dice[1] as u32, point_index as u32]).unwrap();
+                }
+            }
+            
+            return JsValue::NULL;
+        }
+        
+        // Check if dice are rolled
+        if self.dice[0] == 0 && self.dice[1] == 0 {
+            return JsValue::NULL;
+        }
+        
+        // Check if this point has a checker of the current player
+        if !self.has_checker_at(point_index) {
+            return JsValue::NULL;
+        }
+        
+        // Find best move using available dice (left die first, then right die)
+        let dice = self.dice;
+        let dice_used = self.dice_used;
+        
+        // Try left die first (dice[0])
+        if !dice_used[0] && dice[0] > 0 {
+            if let Some(target) = self.get_target_point_internal(point_index, dice[0]) {
+                if self.is_valid_move_to(target) {
+                    return serde_wasm_bindgen::to_value(&[dice[0] as u32, target as u32]).unwrap();
+                }
+            }
+        }
+        
+        // Try right die (dice[1])
+        if !dice_used[1] && dice[1] > 0 {
+            if let Some(target) = self.get_target_point_internal(point_index, dice[1]) {
+                if self.is_valid_move_to(target) {
+                    return serde_wasm_bindgen::to_value(&[dice[1] as u32, target as u32]).unwrap();
+                }
+            }
+        }
+        
+        JsValue::NULL
     }
 }
 
