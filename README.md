@@ -4,26 +4,31 @@
 
 # Prerequisites
 
-- Rust (latest stable version)
-wasm-pack, install with: 
-```bash
-cargo install wasm-pack
-```
+- **Node.js** (v16 or higher) - (https://nodejs.org/)
+- **Rust** (latest stable version) - (https://rustup.rs/)
 
-1. Build the WebAssembly module:
-```bash
-wasm-pack build --target web
-```
+- **wasm-pack** - Install with:
+  ```bash
+  cargo install wasm-pack
+  ```
 
-2. Load files with a local web server:
-```bash
-python -m http.server 8000
-```
+### Build Steps
 
-3. Open browser:
-```bash
-http://localhost:8000
-```
+1. **Build the WebAssembly module:**
+   ```bash
+   wasm-pack build --target web
+   ```
+
+2. **Install Node.js dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   `http://localhost:3000` (or the port shown in the terminal)
 
 <br>
 
@@ -98,44 +103,29 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 
 <br>
 
-Zoroastrian religion was born in the Avestan-speaking regions of the Iranian plateau, the Avestans being one of the many Iranian ethnicities. Basic prayer:
-
-- "Righteousness is best (of all that is) good.
-As desired, what is being desired
-is truth for him who (represents) best truth."
-
-- “Asha is virtuously maginificent,
-And joy upon joy is what Asha provides
-For thus is Asha Vahishta."
-
-- "Truth is best (of all that is) good.
-As desired, as desired, truth
-is for him who (represents) best truth."
-
-- "Holiness (Asha) is the best of all good:
-it is also happiness.
-Happy the man who is holy with perfect holiness!"
-
-- "Righteousness is the best good and it is happiness.
-Happiness is to her/him who is righteous
-for the sake of the best righteousness."
-
-<br>
-
 # Structure
 
 ```
 .
-├── Cargo.toml          # Rust project configuration
-├── Cargo.lock          # Dependency lock file
+├── Cargo.toml               # Rust project configuration       (Backend)  (Config)
+├── Cargo.lock               # Rust dependency lock file        (Backend)  (Config)
+├── package.json             # Node.js dependencies and scripts (Frontend) (Config)
+├── package-lock.json        # Node.js dependency lock file     (Frontend) (Config)
+├── vite.config.js           # Vite build configuration         (Frontend) (Config)
+├── index.html               # HTML entry point                 (Frontend) (Static / 1 Markup)
+├── style.css                # Global styles                    (Frontend) (Static / 4 Styles)
 ├── src/
-│   └── lib.rs          # Main game logic (Rust/WASM)
-├── pkg/                # Generated WebAssembly package (created by wasm-pack)
-│   ├── nard.js         # JavaScript bindings
-│   ├── nard_bg.wasm    # WebAssembly binary
-│   └── *.d.ts          # TypeScript definitions
-├── index.html          # Web interface
-├── style.css           # Styling
-├── index.js            # JavaScript bindings and UI logic
-└── README.md           # This file
+│   ├── lib.rs               # Rust game logic (WebAssembly)    (Backend)  (Source / 2 Library)
+│   ├── App.jsx              # React main component             (Frontend) (Source / 5 Component)
+│   ├── App.css              # Component styles                 (Frontend) (Static / 4 Styles)
+│   ├── main.jsx             # React entry point                (Frontend) (Source / 6 Script)
+│   └── database.js          # SQL History                      (Frontend) (Source / 3 Module)
+├── pkg/                     # wasm-pack generated              (Backend)
+│   ├── nard.js              # WASM bindings                    (Backend)  (Source / 3 Module)
+│   ├── nard_bg.wasm         # Compiled WebAssembly             (Backend)  (Source / 2 Library)
+│   ├── nard.d.ts            # TypeScript definitions           (Backend)  (Source / 3 Module)
+│   ├── nard_bg.wasm.d.ts    # WASM TypeScript definitions      (Backend)  (Source / 3 Module)
+│   ├── package.json         # WASM package metadata            (Backend)  (Config)
+│   └── README.md            # WASM package documentation       (Backend)  (Static / 2 Documentation)
+└── README.md                # This file
 ```

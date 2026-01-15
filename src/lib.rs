@@ -919,6 +919,13 @@ impl GameState {
         // If not all dice are used but there are no valid moves with remaining dice, end the turn
         // This allows the player to roll dice again on their next turn
         // Note: This matches the game rule that if you can't make a move, you skip your turn
+        // IMPORTANT: Only check for valid moves if dice are actually rolled (not [0,0])
+        // This prevents premature turn switching when dice haven't been rolled yet
+        if self.dice[0] == 0 && self.dice[1] == 0 {
+            return;
+        }
+        
+        // If not all dice are used but there are no valid moves with remaining dice, end the turn
         if !self.has_valid_moves() {
             self.switch_player();
         }
