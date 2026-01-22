@@ -1,12 +1,10 @@
-<img width="1387" height="1036" alt="Screenshot 2026-01-15 135137" src="https://github.com/user-attachments/assets/7a365f7a-81d2-44f6-97ed-3c54f94b4c3f" />
+
 
 <br>
 
 # Prerequisites
 
-- **Node.js** (v16 or higher) - (https://nodejs.org/)
 - **Rust** (latest stable version) - (https://rustup.rs/)
-
 - **wasm-pack** - Install with:
   ```bash
   cargo install wasm-pack
@@ -19,16 +17,11 @@
    wasm-pack build --target web
    ```
 
-2. **Node.js:**
+2. **Local web server:**
    ```bash
-   npm install
+   python -m http.server 8000
    ```
-
-3. **Development server:**
-   ```bash
-   npm run dev
-   ```
-`http://localhost:3000` (or the port shown in the terminal)
+   Open `http://localhost:8000` in your browser.
 
 <br>
 
@@ -107,25 +100,26 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 
 ```
 .
-├── Cargo.toml               # Rust project configuration       (Backend)  (Config)
-├── Cargo.lock               # Rust dependency lock file        (Backend)  (Config)
-├── package.json             # Node.js dependencies and scripts (Frontend) (Config)
-├── package-lock.json        # Node.js dependency lock file     (Frontend) (Config)
-├── vite.config.js           # Vite build configuration         (Frontend) (Config)
-├── index.html               # HTML entry point                 (Frontend) (Static / 1 Markup)
-├── style.css                # Global styles                    (Frontend) (Static / 4 Styles)
+├── Cargo.toml               # Rust project configuration       (Rust)     (Config)
+├── Cargo.lock               # Rust dependency lock file        (Rust)     (Config)
+├── package.json             # Node.js module type              (JS)       (Config)
+├── index.html               # HTML entry point                 (Static)   (Markup)
+├── index.js                 # Minimal JavaScript UI layer       (JS)       (Source)
+├── style.css                # Global styles                    (Static)   (Styles)
 ├── src/
-│   ├── lib.rs               # Rust game logic (WebAssembly)    (Backend)  (Source / 2 Library)
-│   ├── App.jsx              # React main component             (Frontend) (Source / 5 Component)
-│   ├── App.css              # Component styles                 (Frontend) (Static / 4 Styles)
-│   ├── main.jsx             # React entry point                (Frontend) (Source / 6 Script)
-│   └── database.js          # SQL History                      (Frontend) (Source / 3 Module)
-├── pkg/                     # wasm-pack generated              (Backend)
-│   ├── nard.js              # WASM bindings                    (Backend)  (Source / 3 Module)
-│   ├── nard_bg.wasm         # Compiled WebAssembly             (Backend)  (Source / 2 Library)
-│   ├── nard.d.ts            # TypeScript definitions           (Backend)  (Source / 3 Module)
-│   ├── nard_bg.wasm.d.ts    # WASM TypeScript definitions      (Backend)  (Source / 3 Module)
-│   ├── package.json         # WASM package metadata            (Backend)  (Config)
-│   └── README.md            # WASM package documentation       (Backend)  (Static / 2 Documentation)
+│   └── lib.rs               # Rust game engine (WebAssembly)  (Rust)     (Source)
+│       ├── GameState        # Core game state management
+│       ├── Move validation  # All game rules & logic
+│       ├── Status messages  # Game status & UI text
+│       └── Win conditions   # Victory detection
+├── pkg/                     # wasm-pack generated              (Rust/WASM)
+│   ├── nard.js              # WASM bindings                    (Rust/WASM) (Source)
+│   ├── nard_bg.wasm         # Compiled WebAssembly             (Rust/WASM) (Source)
+│   ├── nard.d.ts            # TypeScript definitions           (Rust/WASM) (Source)
+│   ├── nard_bg.wasm.d.ts    # WASM TypeScript definitions      (Rust/WASM) (Source)
+│   ├── package.json         # WASM package metadata            (Rust/WASM) (Config)
+│   └── README.md            # WASM package documentation       (Rust/WASM) (Documentation)
 └── README.md                # This file
 ```
+
+**Architecture:** The game engine is implemented entirely in Rust (`src/lib.rs`), compiled to WebAssembly for optimal performance. All game logic, rules validation, move calculation, status messages, and win condition checking run in Rust. The JavaScript (`index.js`) is a minimal thin layer that handles only DOM manipulation and event binding, delegating all game logic to the Rust engine.

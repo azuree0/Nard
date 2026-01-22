@@ -4,10 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="container">
+        <header>
+            <h1>Nard</h1>
+        </header>
+        
+        <div class="game-info">
+            <div class="player-info">
+                <div class="player-indicator">
+                    <span>Current Player: </span>
+                    <span id="player-name" class="white">White</span>
+                </div>
+                <div class="dice-container">
+                    <span>Dice: </span>
+                    <div id="dice-values">
+                        <span class="die">-</span>
+                        <span class="die">-</span>
+                    </div>
+                </div>
+                <div id="bar-display" class="bar-display" style="display: none;">
+                    <span>White Bar: <span id="white-bar">0</span></span>
+                    <span>Black Bar: <span id="black-bar">0</span></span>
+                </div>
+                <div id="born-off-display" class="born-off-display" style="display: none;">
+                    <span>White Off: <span id="white-born-off">0</span></span>
+                    <span>Black Off: <span id="black-born-off">0</span></span>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="roll-btn" class="btn btn-primary">Roll Dice</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+        </div>
+        
+        <div class="board-container">
+            <div id="game-board" class="board"></div>
+        </div>
+    </div>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
 

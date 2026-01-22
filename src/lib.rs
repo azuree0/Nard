@@ -1054,6 +1054,74 @@ impl GameState {
         
         JsValue::NULL
     }
+    
+    /// Get the current status message for the game
+    #[wasm_bindgen]
+    pub fn get_status_message(&self) -> String {
+        if self.game_over {
+            if let Some(winner) = self.winner {
+                let winner_name = match winner {
+                    Player::White => "White",
+                    Player::Black => "Black",
+                };
+                return format!("Game Over! {} Player Wins!", winner_name);
+            }
+            return "Game Over!".to_string();
+        }
+        
+        let dice_rolled = self.dice[0] > 0 || self.dice[1] > 0;
+        if !dice_rolled {
+            return String::new();
+        }
+        
+        let can_roll = (self.dice[0] == 0 && self.dice[1] == 0) || 
+                       (self.dice_used[0] && self.dice_used[1]);
+        if can_roll {
+            "Roll dice to start turn".to_string()
+        } else {
+            "Select a point to move".to_string()
+        }
+    }
+    
+    /// Check if dice can be rolled
+    #[wasm_bindgen]
+    pub fn can_roll_dice(&self) -> bool {
+        if self.game_over {
+            return false;
+        }
+        let can_roll = (self.dice[0] == 0 && self.dice[1] == 0) || 
+                       (self.dice_used[0] && self.dice_used[1]);
+        can_roll
+    }
+    
+    /// Get player name as string
+    #[wasm_bindgen]
+    pub fn get_player_name(&self) -> String {
+        match self.current_player {
+            Player::White => "White".to_string(),
+            Player::Black => "Black".to_string(),
+        }
+    }
+    
+    /// Check if a point is a valid entry point when player has checkers on bar
+    #[wasm_bindgen]
+    pub fn is_valid_entry_point_for_dice(&self, point_index: usize, die: u8) -> bool {
+        let on_bar = match self.current_player {
+            Player::White => self.white_bar > 0,
+            Player::Black => self.black_bar > 0,
+        };
+        
+        if !on_bar {
+            return false;
+        }
+        
+        let expected_entry = match self.current_player {
+            Player::White => (24 - die) as usize,
+            Player::Black => (die - 1) as usize,
+        };
+        
+        expected_entry == point_index && self.is_valid_entry_point(point_index)
+    }
 }
 
 #[wasm_bindgen]
