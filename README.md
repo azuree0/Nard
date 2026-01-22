@@ -1,4 +1,4 @@
-
+<img width="1075" height="767" alt="Screenshot 2026-01-22 134454" src="https://github.com/user-attachments/assets/9cdc289f-cd3d-433f-af37-d508c45c7179" />
 
 <br>
 
@@ -21,7 +21,7 @@
    ```bash
    python -m http.server 8000
    ```
-   Open `http://localhost:8000` in your browser.
+   `http://localhost:8000` in your browser.
 
 <br>
 
@@ -121,5 +121,3 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 │   └── README.md            # WASM package documentation       (Rust/WASM) (Documentation)
 └── README.md                # This file
 ```
-
-**Architecture:** The game engine is implemented entirely in Rust (`src/lib.rs`), compiled to WebAssembly for optimal performance. All game logic, rules validation, move calculation, status messages, and win condition checking run in Rust. The JavaScript (`index.js`) is a minimal thin layer that handles only DOM manipulation and event binding, delegating all game logic to the Rust engine.
