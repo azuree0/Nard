@@ -104,7 +104,7 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 ├── Cargo.lock               # Rust dependency lock file        (Rust)     (Config)
 ├── package.json             # Node.js module type              (JS)       (Config)
 ├── index.html               # HTML entry point                 (Static)   (Markup)
-├── index.js                 # Minimal JavaScript UI layer       (JS)       (Source)
+├── index.js                 # Minimal JavaScript UI layer      (JS)       (Source)
 ├── style.css                # Global styles                    (Static)   (Styles)
 ├── src/
 │   └── lib.rs               # Rust game engine (WebAssembly)  (Rust)     (Source)
