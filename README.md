@@ -100,24 +100,24 @@ The board design reflects Zoroastrian cosmological & theological symbolism:
 
 ```
 .
-├── Cargo.toml               # Rust project configuration       (Rust)     (Config)
-├── Cargo.lock               # Rust dependency lock file        (Rust)     (Config)
-├── package.json             # Node.js module type              (JS)       (Config)
-├── index.html               # HTML entry point                 (Static)   (Markup)
-├── index.js                 # Minimal JavaScript UI layer      (JS)       (Source)
-├── style.css                # Global styles                    (Static)   (Styles)
+├── Cargo.toml               # Rust project configuration       (Backend)  (Config)
+├── Cargo.lock               # Rust dependency lock file        (Backend)  (Config)
+├── package.json             # Node.js module type              (Frontend) (Config)
+├── index.html               # HTML entry point                 (Frontend) (Static /  Markup)
+├── index.js                 # Minimal JavaScript UI layer      (Frontend) (Source /  Script)
+├── style.css                # Global styles                    (Frontend) (Static /  Styles)
 ├── src/
-│   └── lib.rs               # Rust game engine (WebAssembly)  (Rust)     (Source)
+│   └── lib.rs               # Rust game engine (WebAssembly)   (Backend)  (Source /  Library)
 │       ├── GameState        # Core game state management
 │       ├── Move validation  # All game rules & logic
 │       ├── Status messages  # Game status & UI text
 │       └── Win conditions   # Victory detection
-├── pkg/                     # wasm-pack generated              (Rust/WASM)
-│   ├── nard.js              # WASM bindings                    (Rust/WASM) (Source)
-│   ├── nard_bg.wasm         # Compiled WebAssembly             (Rust/WASM) (Source)
-│   ├── nard.d.ts            # TypeScript definitions           (Rust/WASM) (Source)
-│   ├── nard_bg.wasm.d.ts    # WASM TypeScript definitions      (Rust/WASM) (Source)
-│   ├── package.json         # WASM package metadata            (Rust/WASM) (Config)
-│   └── README.md            # WASM package documentation       (Rust/WASM) (Documentation)
+├── pkg/                     # wasm-pack generated              (Backend)
+│   ├── nard.js              # WASM bindings                    (Backend)  (Source /  Module)
+│   ├── nard_bg.wasm         # Compiled WebAssembly             (Backend)  (Source /  Library)
+│   ├── nard.d.ts            # TypeScript definitions           (Backend)  (Source /  Module)
+│   ├── nard_bg.wasm.d.ts    # WASM TypeScript definitions      (Backend)  (Source /  Module)
+│   ├── package.json         # WASM package metadata            (Backend)  (Config)
+│   └── README.md            # WASM package documentation       (Backend)  (Static /  Documentation)
 └── README.md                # This file
 ```
